@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace PointApp
 {
@@ -6,6 +6,7 @@ namespace PointApp
     {
         static void Main(string[] args)
         {
+            // Вводное сообщение
             Console.WriteLine("Point Operations Tool");
             Console.WriteLine("Enter point coordinates (X Y), or 'q' to quit.");
             Console.WriteLine("X and Y should be decimal numbers.");
@@ -14,21 +15,25 @@ namespace PointApp
 
             while (true)
             {
+                // Запрос координат точки
                 Console.Write("\nEnter coordinates (double X, double Y): ");
                 string? input = Console.ReadLine();
 
+                // Проверка на пустой ввод
                 if (string.IsNullOrWhiteSpace(input))
                 {
                     Console.WriteLine("Input is empty. Try again.");
                     continue;
                 }
 
+                // Выход по команде
                 if (input.Trim().ToLower() == "q")
                 {
                     Console.WriteLine("Exiting program...");
                     break;
                 }
 
+                // Разделение ввода на части
                 string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length != 2)
                 {
@@ -36,23 +41,28 @@ namespace PointApp
                     continue;
                 }
 
+                // Парсинг координаты X
                 if (!double.TryParse(parts[0], out double x))
                 {
                     Console.WriteLine("X must be a decimal number.");
                     continue;
                 }
 
+                // Парсинг координаты Y
                 if (!double.TryParse(parts[1], out double y))
                 {
                     Console.WriteLine("Y must be a decimal number.");
                     continue;
                 }
 
+                // Создание объекта точки
                 currentPoint = new Point(x, y);
                 Console.WriteLine($"\nCreated point: {currentPoint}");
 
+                // Показать доступные операции
                 ShowOperations(currentPoint);
 
+                // Предложение повторного анализа
                 Console.Write("\nAnalyze another point? (y/n): ");
                 string? again = Console.ReadLine()?.Trim().ToLower();
                 if (again != "y" && again != "yes")
@@ -62,10 +72,12 @@ namespace PointApp
                 }
             }
 
+            // Конец работы программы
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
 
+        // Метод отображает и выполняет операции над точкой
         static void ShowOperations(Point point)
         {
             Console.WriteLine("\nAvailable operations:");
@@ -83,23 +95,28 @@ namespace PointApp
             switch (choice)
             {
                 case "1":
+                    // Увеличение X на 1
                     Console.WriteLine($"Result: {++point}");
                     break;
 
                 case "2":
+                    // Уменьшение X на 1
                     Console.WriteLine($"Result: {--point}");
                     break;
 
                 case "3":
+                    // Явное преобразование в int — только X
                     Console.WriteLine($"(int) point → {(int)point}");
                     break;
 
                 case "4":
+                    // Явное преобразование в double — возвращает Y
                     double y = point;
                     Console.WriteLine($"(double) point → {y}");
                     break;
 
                 case "5":
+                    // Расчёт расстояния между двумя точками
                     Console.Write("Enter second point (X Y): ");
                     string? second = Console.ReadLine();
                     if (string.IsNullOrWhiteSpace(second)) break;
@@ -114,11 +131,12 @@ namespace PointApp
                     }
 
                     var other = new Point(x2, y2);
-                    double distance = point + other;
+                    double distance = point + other; // Переопределенный оператор + для расстояния
                     Console.WriteLine($"Distance: {distance:F2}");
                     break;
 
                 case "6":
+                    // Прибавить целое число к X
                     Console.Write("Enter integer to add to X: ");
                     string? add = Console.ReadLine();
                     if (!int.TryParse(add, out int valAdd))
@@ -130,6 +148,7 @@ namespace PointApp
                     break;
 
                 case "7":
+                    // Вычесть целое число из X
                     Console.Write("Enter integer to subtract from X: ");
                     string? sub = Console.ReadLine();
                     if (!int.TryParse(sub, out int valSub))
@@ -141,6 +160,7 @@ namespace PointApp
                     break;
 
                 default:
+                    // Обработка недопустимого выбора
                     Console.WriteLine("Invalid operation.");
                     break;
             }
